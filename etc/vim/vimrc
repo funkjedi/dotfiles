@@ -64,3 +64,7 @@ nmap <silent> ,ev :e $MYVIMRC<CR>
 nmap <silent> ,sv :so $MYVIMRC<CR>
 
 
+" NERD Tree configurations
+nmap <F7> :NERDTreeToggle<CR>
+
+
