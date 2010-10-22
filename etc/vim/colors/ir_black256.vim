@@ -4,7 +4,7 @@
 "
 " Modified
 " Translated colors to 256 color depth using best possible substitute
-" http://bitbucket.org/funkjedi/dotfiles/etc/vim/colors/ir_black256.vim
+" https://bitbucket.org/funkjedi/dotfiles/src/tip/etc/vim/colors/ir_black256.vim
 "
 
 " ********************************************************************************
