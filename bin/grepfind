@@ -1,0 +1,3 @@
+#!/bin/sh
+
+find . -not -iwholename '*.svn*' -type f -exec grep -Hn "$1" {} \;

@@ -1,0 +1,95 @@
+
+alias androidchrome='adb forward tcp:9222 localabstract:chrome_devtools_remote'
+alias bower='noglob bower'
+alias diffpatch='diff -rupN --exclude=".svn" --exclude=".DS_Store"'
+alias gb="git branch"
+alias gc="git checkout"
+alias gl="git smart-log"
+alias gs="git status --short"
+alias l="ls -laG"
+alias ll="ls -lG"
+alias ls="ls -G"
+alias phpd='php -S 0.0.0.0:8080'
+alias subl="'/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl'"
+alias zip='zip -x "*.DS_Store"'
+
+
+
+export PATH=$PWD/vendor/bin:$HOME/.composer/vendor/bin:/usr/local/bin:$PATH:$HOME/bin:$HOME/.rvm/bin:$HOME/.rvm/gems/ruby-1.9.3-p125/bin:$HOME/bin/Sencha/Cmd/3.0.0.250:$HOME/bin/android-sdk-macosx/tools:$HOME/bin/android-sdk-macosx/platform-tools
+
+export PYTHONPATH="/Library/Python/2.7/site-packages/:/usr/local/Cellar/mercurial/2.9/lib/python2.7/site-packages/"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home"
+export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+
+
+## Set the prompt
+tilde_or_pwd() {
+  echo $PWD | sed -e "s/\/Users\/$USER/~/"
+}
+
+export PROMPT=$'%{\e[0;90m%}%n@%M%{%}
+%{\e[0;%(?.32.31)m%}>%{\e[0m%} '
+export RPROMPT=$'%{\e[0;90m%}$(tilde_or_pwd)$(git-cwd-info)%{\e[0m%}'
+
+setopt prompt_subst
+
+unsetopt correct_all
+unsetopt correct
+
+
+## Color ls results
+autoload colors; colors;
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+
+
+## Color grep results
+export GREP_OPTIONS='--color=auto'
+export GREP_COLOR='1;32'
+
+
+## Command history configuration
+if [ -z $HISTFILE ]; then
+    HISTFILE=$HOME/.zsh_history
+fi
+HISTSIZE=10000
+SAVEHIST=10000
+
+setopt append_history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups # ignore duplication command history list
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history
+setopt share_history # share command history data
+
+
+## Key-bindings
+bindkey -e
+bindkey '\ew' kill-region
+bindkey -s '\el' "ls\n"
+bindkey '^r' history-incremental-search-backward
+bindkey "^[[5~" up-line-or-history
+bindkey "^[[6~" down-line-or-history
+bindkey '^[[A' up-line-or-search
+bindkey '^[[B' down-line-or-search
+bindkey "^[[H" beginning-of-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[OH" beginning-of-line
+bindkey "^[[F"  end-of-line
+bindkey "^[[4~" end-of-line
+bindkey "^[OF" end-of-line
+bindkey ' ' magic-space
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey '^[[Z' reverse-menu-complete
+bindkey '^?' backward-delete-char
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
+bindkey "\e[3~" delete-char
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
