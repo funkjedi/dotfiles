@@ -1,0 +1,71 @@
+
+# ~/.bashrc: executed by bash(1) for interactive shells.
+# User dependent .bashrc file
+
+# If not running interactively, don't do anything
+[[ "$-" != *i* ]] && return
+
+
+## Aliases
+
+alias diffpatch='diff -rupN --exclude=".svn" --exclude=".DS_Store"'
+alias gb='git branch'
+alias gc='git checkout'
+alias gd='git diff'
+alias gi='git update-index --assume-unchanged'
+alias gl='git log --pretty="format:%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset" --graph'
+alias gs='git status --short'
+alias gsl='git stash list --date=relative'
+alias gsp='git stash pop'
+alias grep='grep --color=auto'
+alias l="ls -laG"
+alias ll="ls -lG"
+alias ls="ls -G"
+
+
+## Export vars
+
+export PS1=$'\[\e[90m\]$(tilde_or_pwd)\[\e[m\] \[\e[34m\]$(find_git_branch)\[\e[90m\]@\[\e[33m\]$(find_git_head)\[\e[m\]$(find_git_rebase)$(find_git_dirty) \[\e[32m\]>\[\e[m\] '
+
+
+## Function definitions
+
+tilde_or_pwd() {
+  echo $PWD | sed -e "s/\/home\/$USER/~/"
+}
+
+find_git_path() {
+  echo "$(git rev-parse --show-toplevel 2> /dev/null)"
+}
+
+find_git_head() {
+  echo "$(git rev-parse --short HEAD 2> /dev/null)"
+}
+
+find_git_branch() {
+  local git_branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
+  if [ "$git_branch" ]; then
+    if [ "$git_branch" == "HEAD" ]; then
+      git_branch="detached*"
+    fi
+    echo "($git_branch)"
+  fi
+}
+
+find_git_rebase() {
+  local git_path="$(find_git_path)"
+  if [ -f "$git_path/BISECT_LOG" ]; then
+    echo "+bisect"
+  elif [ -f "$git_path/MERGE_HEAD" ]; then
+    echo "+merge"
+  elif [ -d "$git_path/rebase-apply" -o -d "$git_path/rebase-merge" ]; then
+    echo "+rebase"
+  fi
+}
+
+find_git_dirty() {
+  local git_status="$(git status --porcelain 2> /dev/null)"
+  if [ "$git_status" ]; then
+    echo '*'
+  fi
+}
